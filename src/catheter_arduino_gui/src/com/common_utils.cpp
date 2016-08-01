@@ -1,5 +1,6 @@
 #include "com/common_utils.h"
 
+#ifdef _MSC_VER
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
@@ -9,6 +10,7 @@
       #define new DBG_NEW
    #endif
 #endif  // _DEBUG
+#endif  // __MSC_VER
 
 CatheterChannelCmdSet resetCmd()
 {
