@@ -3,14 +3,14 @@ cmake_minimum_required(VERSION 2.8)
 
 project(catheter_arduino_gui)
 
+
 find_package(Boost COMPONENTS system thread REQUIRED)
 find_package(wxWidgets COMPONENTS core base adv propgrid REQUIRED )
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -U__STRICT_ANSI__" )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -O0" )
 
 include_directories(
-${BOOST_INDCLUDE_DIRS}
-${WXWIDGETS_INCLUDE_DIRS}
+${BOOST_INCLUDE_DIRS}
 inc
 )
 
@@ -62,6 +62,5 @@ simple_serial_lib
 ${Boost_LIBRARIES}
 ${Boost_SYSTEM_LIBRARY}
 ${Boost_THREAD_LIBRARY}
-${wxWidgets_LIBRARIES}
 ${wxWidgets_ADVANCED_LIBRARIES}
 )
