@@ -52,6 +52,7 @@ wxBEGIN_EVENT_TABLE(CatheterGuiFrame, wxFrame)
     EVT_BUTTON(CatheterGuiFrame::ID_SAVE_PLAYFILE_BUTTON, CatheterGuiFrame::OnSavePlayfileButtonClicked)
     EVT_BUTTON(CatheterGuiFrame::ID_SEND_COMMANDS_BUTTON, CatheterGuiFrame::OnSendCommandsButtonClicked)
     EVT_BUTTON(CatheterGuiFrame::ID_SEND_RESET_BUTTON, CatheterGuiFrame::OnSendResetButtonClicked)
+	EVT_BUTTON(CatheterGuiFrame::ID_SEND_POLL_BUTTON, CatheterGuiFrame::OnSendPollButtonClicked)
 wxEND_EVENT_TABLE()
 
 CatheterGuiFrame::CatheterGuiFrame(const wxString& title, SerialThreadObject* thrdPtr) : 
@@ -77,6 +78,7 @@ wxFrame(NULL, wxID_ANY, title)
     selectPlayfileButton = new wxButton(parentPanel, ID_SELECT_PLAYFILE_BUTTON, wxT("Select Playfile"));
     newPlayfileButton = new wxButton(parentPanel, ID_NEW_PLAYFILE_BUTTON, wxT("New Playfile"));
     savePlayfileButton = new wxButton(parentPanel, ID_SAVE_PLAYFILE_BUTTON, wxT("Save Playfile"));
+	pollButton = new wxButton(parentPanel, ID_SEND_POLL_BUTTON, wxT("Poll Arduino"));
 
     // row 2   
     sendCommandsButton = new wxButton(parentPanel, ID_SEND_COMMANDS_BUTTON, wxT("Send Commands"));
@@ -87,10 +89,11 @@ wxFrame(NULL, wxID_ANY, title)
     playfilePath = wxEmptyString;
 
     // add buttons to the frame
-    wxFlexGridSizer* buttonBox = new wxFlexGridSizer(2, 3, wxSize(2, 2));
+    wxFlexGridSizer* buttonBox = new wxFlexGridSizer(2, 4, wxSize(2, 2));
     buttonBox->Add(selectPlayfileButton);
     buttonBox->Add(newPlayfileButton);
     buttonBox->Add(savePlayfileButton);
+	buttonBox->Add(pollButton);
     buttonBox->Add(sendCommandsButton);
     buttonBox->Add(sendResetButton);
     buttonBox->Add(refreshSerialButton);
@@ -179,6 +182,12 @@ void CatheterGuiFrame::OnSendCommandsButtonClicked(wxCommandEvent& e) {
     } else {
         setStatusText(wxT("Error Sending Commands"));
     }
+}
+
+
+void CatheterGuiFrame::OnSendPollButtonClicked(wxCommandEvent& e) {
+	sendPollCommand();
+	setStatusText(wxT("Poll Command Successfully Sent"));
 }
 
 void CatheterGuiFrame::OnSendResetButtonClicked(wxCommandEvent& e) {
@@ -289,6 +298,12 @@ bool CatheterGuiFrame::sendResetCommand() {
 	//send a reset to the arduino
 	serialObject->serialCommand(SerialThreadObject::ThreadCmd::resetArduino);
 	return reset;
+}
+
+bool CatheterGuiFrame::sendPollCommand() {
+	setStatusText(wxT("Sending Global Poll Command...\n"));
+	serialObject->serialCommand(SerialThreadObject::ThreadCmd::poll);
+	return true;
 }
 
 // @TODO: The functionality of this code will be dramatically different.

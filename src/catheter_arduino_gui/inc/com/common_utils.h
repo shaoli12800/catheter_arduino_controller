@@ -10,6 +10,7 @@
 #include <fstream>
 #include <sstream>
 
+//This file defines a bunch of odds and ends and should be better named and moved.
 
 /* number of channels being used */
 #define NCHANNELS 6 
@@ -77,6 +78,7 @@ struct CatheterPacket {
 };
 
 CatheterChannelCmdSet resetCmd();
+CatheterChannelCmdSet pollCmd();
 
 
 
@@ -150,7 +152,7 @@ void getPacketBytes(const int& pseqnum, const std::vector<CatheterChannelCmd>& c
 comStatus parseBytes2Cmds(std::vector<unsigned char>& reply, std::vector<CatheterChannelCmd>& cmds);
 
 // Parse the preamble.
-int parsePreamble(std::vector < uint8_t > inputBytes );
+int parsePreamble(const std::vector < uint8_t > &inputBytes );
 
 /** \brief void emptyCommand(CatheterChannelCmd& cmd): populate a generic, empty channel command */
 CatheterChannelCmd emptyCommand();
