@@ -35,6 +35,7 @@ add_library(simple_serial_lib src/ser/simple_serial.cpp)
 
 
 
+
 #final executable.
 
 add_executable(catheter_gui src/gui/catheter_gui.cpp)
@@ -42,11 +43,29 @@ add_executable(catheter_gui src/gui/catheter_gui.cpp)
 target_link_libraries(serial_sender_lib
 simple_serial_lib
 common_utils_lib
+${Boost_LIBRARIES}
+${Boost_SYSTEM_LIBRARY}
+${Boost_THREAD_LIBRARY}
 )
 
 target_link_libraries(serial_thread_lib
 serial_sender_lib
 common_utils_lib
+${Boost_LIBRARIES}
+${Boost_SYSTEM_LIBRARY}
+${Boost_THREAD_LIBRARY}
+)
+
+target_link_libraries(catheter_grid_lib
+    ${wxWidgets_ADVANCED_LIBRARIES}
+)
+
+target_link_libraries(status_frame_lib
+    ${wxWidgets_ADVANCED_LIBRARIES}
+)
+
+target_link_libraries(status_text_lib
+  ${wxWidgets_ADVANCED_LIBRARIES}
 )
 
 target_link_libraries(
@@ -63,4 +82,5 @@ ${Boost_LIBRARIES}
 ${Boost_SYSTEM_LIBRARY}
 ${Boost_THREAD_LIBRARY}
 ${wxWidgets_ADVANCED_LIBRARIES}
+${wxWidgets_LIBRARIES}
 )
