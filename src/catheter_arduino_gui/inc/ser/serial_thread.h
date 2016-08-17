@@ -4,6 +4,7 @@
 
 #include <boost/thread.hpp>
 #include <boost/bind.hpp>
+#include "com/catheter_commands.h"
 #include "ser/serial_sender.h"
 #include "gui/status_text.h"
 #include "gui/status_frame.h"
@@ -16,8 +17,8 @@ class SerialThreadObject
 public:
 	
 	SerialThreadObject();
-	void setStatusTextPtr(CatheterStatusText*);
-	void setStatusGrid(StatusGrid* );
+	void setStatusTextPtr(incomingText*);
+	void setStatusGrid(statusData*);
 
 	
 enum ThreadCmd {
@@ -67,29 +68,24 @@ private:
 
 	bool connected;
 
-    // serial connection
+    // serial port
     CatheterSerialSender* ss;
+	//SerialPort *sp;
+	//std::string port_name;
 
-    //
+
+    // data to send to arduino.
 	std::vector< CatheterChannelCmdSet > commandsToArd;
+
+	// reply from arduino.
 	CatheterChannelCmdSet commandFromArd;
 
 
 	// gui handles
-	CatheterStatusText* textStatus;
-	StatusGrid* gridStatus;
+	statusData * statusGridData;
+	
+	incomingText* textStatusData;
 };
-
-
-
-
-
-
-
-
-
-
-
 
 
 #endif

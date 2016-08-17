@@ -12,6 +12,16 @@
 #endif  // _DEBUG
 #endif  // __MSC_VER
 
+
+void incomingText::appendText(const std::string  &newText)
+{
+	boost::mutex::scoped_lock lock(textMutex);
+	this->update = true;
+	stringData += "\n";
+	stringData += newText;
+}
+
+
 // explicit constructor
 CatheterStatusText::CatheterStatusText(wxWindow* parent, wxWindowID id) : wxScrolledWindow(parent, id, wxDefaultPosition, wxSize(50,150)) {
 		
@@ -29,12 +39,18 @@ CatheterStatusText::CatheterStatusText(wxWindow* parent, wxWindowID id) : wxScro
 	}
 
     // public method to send text into the status box
-    bool CatheterStatusText::addText(const std::string &incomingInfo)
-    {
-        boost::mutex::scoped_lock lock(textMutex);
-        SetCatheterStatusText(wxString(incomingInfo));
+bool CatheterStatusText::addText(incomingText *incomingInfo)
+{
+        boost::mutex::scoped_lock lock(incomingInfo->textMutex);
+		if (incomingInfo->update)
+		{
+			SetCatheterStatusText(wxString(incomingInfo->stringData));
+			incomingInfo->stringData.clear();
+		}
+		incomingInfo->update = false;
         return true;
-    }
+}
+
 	bool CatheterStatusText::addWxText(const wxString& msg)
     {
         boost::mutex::scoped_lock lock(textMutex);

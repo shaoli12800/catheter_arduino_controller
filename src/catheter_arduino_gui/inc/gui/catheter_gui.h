@@ -10,7 +10,6 @@
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 
-#include "com/common_utils.h"
 #include "gui/catheter_grid.h"
 #include "gui/status_text.h"
 
@@ -32,6 +31,7 @@ public:
     void OnSendCommandsButtonClicked(wxCommandEvent& e);
     void OnSendResetButtonClicked(wxCommandEvent& e);
 	void OnSendPollButtonClicked(wxCommandEvent& e);
+	void onIdle(wxIdleEvent& e);
 
     enum {
         ID_SELECT_PLAYFILE_BUTTON = 1024,
@@ -71,8 +71,10 @@ private:
     // status panel
     //wxStaticText* statusText;
 	CatheterStatusText *statusText;
+	incomingText* statusTextData;
 
 	//status Grid
+	statusData * statusGridCmdPtr;
 	StatusGrid * statusGridPtr;
 
     // control buttons

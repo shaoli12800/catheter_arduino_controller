@@ -43,9 +43,9 @@ void SerialThreadObject::serialLoop()
 			//}
 			if(newCom == valid)
 			{
-				if(gridStatus != NULL)
+				if(statusGridData != NULL)
 				{
-					gridStatus->updateStatus(commandFromArd.commandList);
+					statusGridData->updateCmdList(commandFromArd.commandList);
 				}
 			}
 
@@ -76,9 +76,9 @@ void SerialThreadObject::serialLoop()
 	}
 }
 
-void SerialThreadObject::setStatusGrid(StatusGrid* newPtr)
+void SerialThreadObject::setStatusGrid(statusData* newPtr)
 {
-	gridStatus = newPtr;
+	statusGridData = newPtr;
 }
 
 void SerialThreadObject::serialCommand(const ThreadCmd& incomingCommand)
@@ -103,18 +103,19 @@ void SerialThreadObject::serialCommand(const ThreadCmd& incomingCommand)
 			break;
 			case resetSerial:
 			{
-				if(textStatus != NULL)
+				if(textStatusData != NULL)
 				{
-					textStatus->addWxText(wxT("Attempting to reset Arduino Serial Connection"));
+					textStatusData->appendText(std::string("Attempting to reset Arduino Serial Connection"));
 				}
 				//reset the serial bus.
 				std::vector<std::string> ports;
 				ss->getAvailablePorts(ports);
 
-				if (!ports.size()) {
-					if(textStatus != NULL)
+				if (!ports.size())
+				{
+					if(textStatusData != NULL)
 					{
-						textStatus->addWxText(wxT("No Serial Ports found."));
+						textStatusData->appendText(std::string("No Serial Ports found."));
 					}
 				} 
 				else
@@ -122,9 +123,9 @@ void SerialThreadObject::serialCommand(const ThreadCmd& incomingCommand)
 					if (ports.size() == 1)
 					{
 						ss->setPort(ports[0]);
-						if(textStatus != NULL)
+						if(textStatusData != NULL)
 						{
-							textStatus->addText(std::string("Connecting to Port: ")+ports[0]);
+							textStatusData->appendText(std::string("Connecting to Port: ")+ports[0]);
 						}
 					}
 					else
@@ -136,15 +137,15 @@ void SerialThreadObject::serialCommand(const ThreadCmd& incomingCommand)
 						int which_port(wxGetNumberFromUser(wxEmptyString, wxT("Select Serial Port Number"), wxEmptyString, 0, 1, ports.size()) - 1);
 						wxMessageBox(wxString::Format("Selected Serial Port: %s", wxString(ports[which_port])));
 						ss->setPort(ports[which_port]);
-						if(textStatus != NULL)
+						if(textStatusData != NULL)
 						{
-							textStatus->addText(std::string("Connecting to Port: ")+ports[which_port]);
+							textStatusData->appendText(std::string("Connecting to Port: ")+ports[which_port]);
 						}
 					}
 					connected = ss->start();
-					if(textStatus != NULL)
+					if(textStatusData != NULL)
 					{
-						textStatus->addText(std::string("Connected!!"));
+						textStatusData->appendText(std::string("Connected!!"));
 					}
 				}
 
@@ -161,9 +162,9 @@ void SerialThreadObject::serialCommand(const ThreadCmd& incomingCommand)
 				commandsToArd.push_back(pollCmd());
 			break;
 			default:
-				if(textStatus != NULL)
+				if(textStatusData != NULL)
 				{
-					textStatus->addText(std::string("Command not recognized"));
+					textStatusData->appendText(std::string("Command not recognized"));
 				}
 			}
 			looplock.unlock();
@@ -174,7 +175,7 @@ void SerialThreadObject::serialCommand(const ThreadCmd& incomingCommand)
 
 // explicit constructor
 SerialThreadObject::SerialThreadObject(): connected(false), ss(new CatheterSerialSender), thrd(),
-	textStatus(NULL), gridStatus(NULL)
+	textStatusData(NULL), statusGridData(NULL)
 {
 	// initialize all of the variables.
 	std::vector< CatheterChannelCmd > commandsToArd;
@@ -186,9 +187,9 @@ SerialThreadObject::SerialThreadObject(): connected(false), ss(new CatheterSeria
 
 }
 
-void SerialThreadObject::setStatusTextPtr(CatheterStatusText* textPtr)
+void SerialThreadObject::setStatusTextPtr(incomingText* textPtr)
 {
-	this->textStatus = textPtr;
+	this->textStatusData = textPtr;
 }
 
 void SerialThreadObject::stopThreads()
