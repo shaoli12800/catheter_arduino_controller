@@ -17,10 +17,11 @@ inc
 include( "${wxWidgets_USE_FILE}" )
 
 # common folder libs
-add_library(common_utils_lib src/com/common_utils.cpp)
+add_library(catheter_commands_lib src/com/catheter_commands.cpp)
 add_library(pc_utils_lib src/com/pc_utils.cpp)
 
 # gui folder libs
+
 
 add_library(catheter_grid_lib src/gui/catheter_grid.cpp)
 add_library(status_frame_lib src/gui/status_frame.cpp)
@@ -33,6 +34,8 @@ add_library(serial_thread_lib src/ser/serial_thread.cpp)
 add_library(simple_serial_lib src/ser/simple_serial.cpp)
 
 
+#other libs
+add_library(catheter_analog_digital_libs src/hardware/digital_analog_conversions.cpp)
 
 
 
@@ -40,9 +43,14 @@ add_library(simple_serial_lib src/ser/simple_serial.cpp)
 
 add_executable(catheter_gui src/gui/catheter_gui.cpp)
 
+target_link_libraries(catheter_commands_lib
+catheter_analog_digital_libs
+)
+
 target_link_libraries(serial_sender_lib
 simple_serial_lib
-common_utils_lib
+catheter_analog_digital_libs
+catheter_commands_lib
 ${Boost_LIBRARIES}
 ${Boost_SYSTEM_LIBRARY}
 ${Boost_THREAD_LIBRARY}
@@ -50,7 +58,8 @@ ${Boost_THREAD_LIBRARY}
 
 target_link_libraries(serial_thread_lib
 serial_sender_lib
-common_utils_lib
+catheter_analog_digital_libs
+catheter_commands_lib
 ${Boost_LIBRARIES}
 ${Boost_SYSTEM_LIBRARY}
 ${Boost_THREAD_LIBRARY}
@@ -70,7 +79,6 @@ target_link_libraries(status_text_lib
 
 target_link_libraries(
 catheter_gui
-common_utils_lib
 pc_utils_lib
 catheter_grid_lib
 status_frame_lib
@@ -78,6 +86,7 @@ status_text_lib
 serial_sender_lib
 serial_thread_lib
 simple_serial_lib
+catheter_analog_digital_libs
 ${Boost_LIBRARIES}
 ${Boost_SYSTEM_LIBRARY}
 ${Boost_THREAD_LIBRARY}

@@ -15,7 +15,7 @@
 #include <boost/thread.hpp>
 
 #include <vector>
-#include "com\communication_definitions.h"
+#include "com/communication_definitions.h"
 
 
 #ifdef _MSC_VER
