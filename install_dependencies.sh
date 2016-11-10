@@ -8,8 +8,8 @@ echo "Beginning Dependency Installation"
 
 sudo apt-get --yes --force-yes install build-essential
 
-sudo apt-get --yes --force-yes install libboost-dev libwgtk2.8-dev
+sudo apt-get --yes --force-yes install libboost-dev libwxgtk2.8-dev
 
-sudo apt-get --yes --force-yes install arduino ardunio-core 
+sudo apt-get --yes --force-yes install arduino arduino-core 
 
 sudo usermod -a -G dialout $USER
