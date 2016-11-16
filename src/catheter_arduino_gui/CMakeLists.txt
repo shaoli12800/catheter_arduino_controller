@@ -4,10 +4,23 @@ cmake_minimum_required(VERSION 2.8)
 project(catheter_arduino_gui)
 
 
+find_package(catkin)
+
 find_package(Boost COMPONENTS system thread REQUIRED)
 find_package(wxWidgets COMPONENTS core base adv propgrid REQUIRED )
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -O0" )
+
+
+IF( catkin_FOUND)
+catkin_package(
+        INCLUDE_DIRS inc
+        LIBRARIES pc_utils_lib 
+        CATKIN_DEPENDS
+                roscpp 
+)
+ENDIF()
+
 
 include_directories(
 ${BOOST_INCLUDE_DIRS}
@@ -36,7 +49,6 @@ add_library(simple_serial_lib src/ser/simple_serial.cpp)
 
 #other libs
 add_library(catheter_analog_digital_libs src/hardware/digital_analog_conversions.cpp)
-
 
 
 #final executable.

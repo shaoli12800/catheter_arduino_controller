@@ -9,6 +9,7 @@ echo "Beginning Dependency Installation"
 sudo apt-get --yes --force-yes install build-essential
 
 sudo apt-get --yes --force-yes install libboost-dev libwxgtk2.8-dev
+sudo apt-get --yes --force-yes install libwxgtk3.0-dev
 
 sudo apt-get --yes --force-yes install arduino arduino-core 
 
