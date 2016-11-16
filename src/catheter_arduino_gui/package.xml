@@ -2,7 +2,7 @@
 <package>
   <name>catheter_arduino_gui</name>
   <version>0.0.1</version>
-  <description>The catheter kinematics package</description>
+  <description>The catheter arduino gui controller</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
@@ -45,13 +45,13 @@
   <build_depend>roscpp</build_depend>
   <build_depend>Boost</build_depend>
   <build_depend>wxWidgets</build_depend>
-  <build_depend>GTest</build_depend>
+  <!--<build_depend>GTest</build_depend> -->
   
 
   <run_depend>roscpp</run_depend>
   <run_depend>Boost</run_depend>
   <run_depend>wxWidgets</run_depend>
-  <run_depend>GTest</run_depend>
+  <!-- <run_depend>GTest</run_depend> -->
   
   
   
