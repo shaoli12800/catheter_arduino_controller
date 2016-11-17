@@ -8,22 +8,29 @@ find_package(catkin)
 
 find_package(Boost COMPONENTS system thread REQUIRED)
 find_package(wxWidgets COMPONENTS core base adv propgrid REQUIRED )
+find_package(GTest REQUIRED)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -O0" )
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 
 IF( catkin_FOUND)
 catkin_package(
-        INCLUDE_DIRS inc
-        LIBRARIES pc_utils_lib 
-        CATKIN_DEPENDS
-                roscpp 
+      INCLUDE_DIRS inc
+      LIBRARIES pc_utils_lib
+      CATKIN_DEPENDS
+              roscpp
+      DEPENDS
+              GTest
+      EXPORTED_TARGETS
 )
 ENDIF()
 
 
 include_directories(
+${catkin_INCLUDE_DIRS}
 ${BOOST_INCLUDE_DIRS}
+${GTEST_INCLUDE_DIRS}
 inc
 )
 
@@ -104,4 +111,17 @@ ${Boost_SYSTEM_LIBRARY}
 ${Boost_THREAD_LIBRARY}
 ${wxWidgets_ADVANCED_LIBRARIES}
 ${wxWidgets_LIBRARIES}
+)
+
+# Add gtest for pc_utils
+catkin_add_gtest(test_pc_utils test/test_pc_utils.cpp WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+target_link_libraries(
+    test_pc_utils
+    pc_utils_lib
+    ${GTEST_LIBRARIES}
+    pthread
+)
+
+install(DIRECTORY test/
+        DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/test
 )
